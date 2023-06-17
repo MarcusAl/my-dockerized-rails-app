@@ -1,0 +1,27 @@
+# Dockerfile.rails
+FROM ruby:3.1.2 AS rails-toolbox
+
+# Default directory
+ENV INSTALL_PATH /opt/app
+RUN mkdir -p $INSTALL_PATH
+
+# Install rails
+RUN gem install rails bundler
+#RUN chown -R user:user /opt/app
+WORKDIR /opt/app
+
+# Run a shell
+CMD ["/bin/sh"]
+
+ARG ARG_COMPOSE_WAIT_VER=2.7.3
+RUN curl -SL https://github.com/ufoscout/docker-compose-wait/releases/download/${ARG_COMPOSE_WAIT_VER}/wait -o /wait
+RUN chmod +x /wait
+
+# Commands
+# FROM: defines what image to start from. We’ll use the official Ruby image as a starting point.
+# ARG: specifies build-time argument variables. If your workstation is running Linux, the user and group ids should match between the host and the docker container.
+# RUN: executes commands inside the container. In the example, we use it to create a user and group and then to install the Rails gems.
+# ENV: defines environment variables.
+# WORKDIR: changes the current directory inside the container.
+# USER: changes the active user inside the container.
+# CMD: defines the program to run when the container starts.
